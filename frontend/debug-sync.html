@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Sincronização</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        button { padding: 10px 20px; margin: 5px; font-size: 16px; }
+        #log { background: #f0f0f0; padding: 10px; margin-top: 20px; max-height: 400px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>Debug Sincronização</h1>
+    <button onclick="verificarPendentes()">1. Verificar Pendentes</button>
+    <button onclick="sincronizarTudo()">2. Sincronizar Tudo</button>
+    <button onclick="limparDB()">3. Limpar IndexedDB</button>
+    <div id="log"></div>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api';
+        let db;
+
+        function log(msg) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${msg}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // Abrir IndexedDB
+        const request = indexedDB.open('ConexaoIBAC', 1);
+        request.onsuccess = (e) => {
+            db = e.target.result;
+            log('✓ IndexedDB conectado');
+        };
+        request.onerror = () => log('✗ Erro ao conectar IndexedDB');
+
+        async function verificarPendentes() {
+            if (!db) { log('✗ DB não inicializado'); return; }
+            
+            const tx = db.transaction(['avaliacoes'], 'readonly');
+            const store = tx.objectStore('avaliacoes');
+            const request = store.getAll();
+            
+            request.onsuccess = () => {
+                const todas = request.result || [];
+                const pendentes = todas.filter(a => !a.synced);
+                log(`Total: ${todas.length} | Pendentes: ${pendentes.length} | Sincronizadas: ${todas.length - pendentes.length}`);
+                
+                if (pendentes.length > 0) {
+                    log('Primeiras 3 pendentes:');
+                    pendentes.slice(0, 3).forEach(a => {
+                        log(`  - ID: ${a.id}, Part: ${a.participacao_id}, Crit: ${a.criterio_id}, Nota: ${a.nota}`);
+                    });
+                }
+            };
+        }
+
+        async function sincronizarTudo() {
+            if (!db) { log('✗ DB não inicializado'); return; }
+            
+            const tx = db.transaction(['avaliacoes'], 'readonly');
+            const store = tx.objectStore('avaliacoes');
+            const request = store.getAll();
+            
+            request.onsuccess = async () => {
+                const todas = request.result || [];
+                const pendentes = todas.filter(a => !a.synced);
+                
+                log(`Iniciando sincronização de ${pendentes.length} avaliações...`);
+                
+                let sucessos = 0;
+                let erros = 0;
+                
+                for (const avaliacao of pendentes) {
+                    try {
+                        const response = await fetch(`${API_URL}/avaliacoes`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                participacao_id: avaliacao.participacao_id,
+                                criterio_id: avaliacao.criterio_id,
+                                nota: avaliacao.nota,
+                                avaliador_nome: avaliacao.avaliador_nome
+                            })
+                        });
+
+                        if (response.ok) {
+                            // Marcar como sincronizado
+                            const txUpdate = db.transaction(['avaliacoes'], 'readwrite');
+                            const storeUpdate = txUpdate.objectStore('avaliacoes');
+                            avaliacao.synced = true;
+                            storeUpdate.put(avaliacao);
+                            
+                            sucessos++;
+                            log(`✓ Avaliação ${avaliacao.id} sincronizada`);
+                        } else {
+                            const error = await response.text();
+                            erros++;
+                            log(`✗ Erro ${avaliacao.id}: ${error}`);
+                        }
+                    } catch (error) {
+                        erros++;
+                        log(`✗ Erro ${avaliacao.id}: ${error.message}`);
+                    }
+                }
+                
+                log(`<strong>Concluído: ${sucessos} sucessos, ${erros} erros</strong>`);
+            };
+        }
+
+        function limparDB() {
+            if (!db) { log('✗ DB não inicializado'); return; }
+            
+            if (!confirm('Limpar TODAS as avaliações do IndexedDB?')) return;
+            
+            const tx = db.transaction(['avaliacoes'], 'readwrite');
+            const store = tx.objectStore('avaliacoes');
+            const request = store.clear();
+            
+            request.onsuccess = () => log('✓ IndexedDB limpo');
+            request.onerror = () => log('✗ Erro ao limpar');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação - Conexão IBAC</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <img src="http://ibacvsj.com.br/wp-content/uploads/2023/03/Logo_Internet.png" alt="IBAC Logo" class="logo">
+                <div>
+                    <h1>Avaliação de Pregação</h1>
+                </div>
+            </div>
+            <div id="syncStatus" class="status"></div>
+        </header>
+
+        <section class="card">
+            <h2>Identificação</h2>
+            <div class="form-group">
+                <label>Seu Nome (Avaliador)</label>
+                <input type="text" id="avaliadorNome" placeholder="Digite seu nome">
+            </div>
+            <div class="form-group">
+                <label>Evento</label>
+                <select id="eventoSelect"></select>
+            </div>
+            <div class="form-group">
+                <label>Pregador</label>
+                <select id="pregadorSelect"></select>
+            </div>
+        </section>
+
+        <section id="criteriosSection" style="display: none;">
+            <h2>Critérios de Avaliação <span style="color: #dc3545;">* Todos obrigatórios</span></h2>
+            <div id="criteriosList"></div>
+            <button id="btnEnviar">Enviar Avaliação</button>
+        </section>
+
+        <div id="mensagem"></div>
+    </div>
+
+    <script type="module" src="avaliacao.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres-dev:
+    image: postgres:15-alpine
+    container_name: conexao-postgres-dev
+    environment:
+      POSTGRES_DB: conexao_ibac_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - ibac-dev
+
+  backend-dev:
+    build: ./backend
+    container_name: conexao-backend-dev
+    ports:
+      - "3001:3000"
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres-dev
+      DB_PORT: 5432
+      DB_NAME: conexao_ibac_dev
+      DB_USER: postgres
+      DB_PASSWORD: postgres_dev
+      PORT: 3000
+    depends_on:
+      - postgres-dev
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - ibac-dev
+    command: npm run dev
+
+  frontend-dev:
+    image: nginx:alpine
+    container_name: conexao-frontend-dev
+    ports:
+      - "8081:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./nginx-dev.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - ibac-dev
+
+volumes:
+  postgres_dev_data:
+
+networks:
+  ibac-dev:
+    driver: bridge

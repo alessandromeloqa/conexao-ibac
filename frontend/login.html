@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Conexão IBAC</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 40px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(26, 77, 124, 0.2);
+        }
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-logo img {
+            width: 120px;
+            height: auto;
+        }
+        .login-logo h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-top: 15px;
+        }
+        .version-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 12px;
+        }
+        .version-footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-logo">
+            <img src="http://ibacvsj.com.br/wp-content/uploads/2023/03/Logo_Internet.png" alt="IBAC Logo">
+            <h1>Área Administrativa</h1>
+        </div>
+        
+        <div class="form-group">
+            <label>Usuário</label>
+            <input type="text" id="username" placeholder="Digite seu usuário" autofocus>
+        </div>
+        
+        <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="password" placeholder="Digite sua senha">
+        </div>
+        
+        <button id="btnLogin">Entrar</button>
+        
+        <div id="mensagem" class="mensagem"></div>
+        
+        <div class="version-footer">
+            <small>Versão <span id="appVersion">carregando...</span></small><br>
+            <small>Desenvolvido por <a href="mailto:1986.alessandro@gmail.com">Alessandro Melo</a></small>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+    <script>
+        // Buscar versão do package.json
+        fetch('/version.json')
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('appVersion').textContent = data.version;
+            })
+            .catch(() => {
+                document.getElementById('appVersion').textContent = '1.0.0';
+            });
+    </script>
+</body>
+</html>

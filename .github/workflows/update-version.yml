@@ -1,0 +1,30 @@
+name: Update Version
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Update version.json
+        run: |
+          chmod +x update-version.sh
+          ./update-version.sh
+      
+      - name: Commit version update
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add frontend/version.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: update version [skip ci]"
+          git push

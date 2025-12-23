@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificados - Conexão IBAC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <img src="http://ibacvsj.com.br/wp-content/uploads/2023/03/Logo_Internet.png" alt="IBAC Logo" class="logo">
+                <div>
+                    <h1>Geração de Certificados</h1>
+                    <nav>
+                        <a href="index.html">Histórico</a>
+                        <a href="comparativo.html">Comparativo</a>
+                        <a href="certificados.html" class="active">Certificados</a>
+                        <a href="avaliacao.html">Avaliar</a>
+                        <a href="ranking-select.html">Ranking</a>
+                        <a href="admin-criterios.html">Admin</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <section class="card-section">
+            <div class="card">
+                <h2>Certificado Individual</h2>
+                <div class="form-group">
+                    <label>Evento</label>
+                    <select id="eventoIndividual"></select>
+                </div>
+                <div class="form-group">
+                    <label>Pregador</label>
+                    <select id="pregadorIndividual"></select>
+                </div>
+                <button id="btnGerarIndividual">Gerar Certificado</button>
+            </div>
+
+            <div class="card">
+                <h2>Certificados em Lote</h2>
+                <div class="form-group">
+                    <label>Evento</label>
+                    <select id="eventoLote"></select>
+                </div>
+                <button id="btnGerarLote">Gerar Todos</button>
+                <div id="loteResult"></div>
+            </div>
+
+            <div class="card">
+                <h2>Validar Certificado</h2>
+                <div class="form-group">
+                    <label>Código de Validação</label>
+                    <input type="text" id="codigoValidacao" placeholder="UUID">
+                </div>
+                <button id="btnValidar">Validar</button>
+                <div id="validacaoResult"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="certificados.js"></script>
+</body>
+</html>

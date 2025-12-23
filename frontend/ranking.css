@@ -1,0 +1,274 @@
+:root {
+    --primary: #1a4d7c;
+    --secondary: #2874a6;
+    --gold: #ffd700;
+    --silver: #c0c0c0;
+    --bronze: #cd7f32;
+    --bg-dark: #0f1419;
+    --bg-card: rgba(255,255,255,0.05);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f1419 0%, var(--primary) 50%, var(--secondary) 100%);
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.telao {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.telao-header {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeIn 0.8s;
+    padding: 20px;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.logo-ranking {
+    width: clamp(60px, 10vw, 100px);
+    height: auto;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    animation: fadeIn 1s;
+}
+
+.telao-header h1 {
+    font-size: clamp(24px, 5vw, 48px);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    margin-bottom: 10px;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--gold), #fff, var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.telao-header h2 {
+    font-size: clamp(18px, 3vw, 32px);
+    color: var(--gold);
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.telao-header p {
+    font-size: clamp(14px, 2vw, 20px);
+    opacity: 0.8;
+}
+
+.podio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+    animation: slideUp 0.8s;
+}
+
+.podio-item {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    border: 2px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 200px;
+}
+
+.podio-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.primeiro {
+    background: linear-gradient(135deg, rgba(255,215,0,0.2) 0%, rgba(255,237,78,0.1) 100%);
+    border: 3px solid var(--gold);
+    box-shadow: 0 0 30px rgba(255,215,0,0.3);
+    grid-column: 1 / -1;
+    order: -1;
+}
+
+.segundo {
+    background: linear-gradient(135deg, rgba(192,192,192,0.2) 0%, rgba(232,232,232,0.1) 100%);
+    border: 3px solid var(--silver);
+}
+
+.terceiro {
+    background: linear-gradient(135deg, rgba(205,127,50,0.2) 0%, rgba(232,168,124,0.1) 100%);
+    border: 3px solid var(--bronze);
+}
+
+.posicao {
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 900;
+    margin-bottom: 12px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.primeiro .posicao { color: var(--gold); }
+.segundo .posicao { color: var(--silver); }
+.terceiro .posicao { color: var(--bronze); }
+
+.nome {
+    font-size: clamp(16px, 3vw, 24px);
+    margin-bottom: 12px;
+    font-weight: 600;
+    word-wrap: break-word;
+    line-height: 1.3;
+}
+
+.nota {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 900;
+    color: var(--gold);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.ranking-completo {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    animation: fadeIn 1s;
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow-x: auto;
+}
+
+.ranking-completo h3 {
+    font-size: clamp(20px, 4vw, 32px);
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--gold);
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+    font-weight: 700;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 300px;
+}
+
+thead {
+    background: rgba(0,0,0,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+th {
+    padding: 16px 12px;
+    font-size: clamp(14px, 2.5vw, 20px);
+    text-align: left;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    font-weight: 600;
+}
+
+td {
+    padding: 14px 12px;
+    font-size: clamp(13px, 2vw, 18px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+tbody tr {
+    transition: background 0.2s;
+}
+
+tbody tr:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+tbody tr:nth-child(odd) {
+    background: rgba(255,255,255,0.02);
+}
+
+.telao-footer {
+    text-align: center;
+    margin-top: auto;
+    padding: 20px;
+    font-size: clamp(12px, 2vw, 16px);
+    opacity: 0.6;
+    background: var(--bg-card);
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile First - Tablets */
+@media (max-width: 768px) {
+    .telao { padding: 15px; }
+    
+    .podio {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .primeiro { grid-column: 1; }
+    
+    .podio-item {
+        min-height: 160px;
+        padding: 20px 12px;
+    }
+    
+    th, td { padding: 12px 8px; }
+    
+    .ranking-completo { padding: 15px; }
+}
+
+/* Mobile - Smartphones */
+@media (max-width: 480px) {
+    .telao { padding: 10px; }
+    
+    .telao-header { padding: 15px; margin-bottom: 20px; }
+    
+    .podio { gap: 12px; margin-bottom: 20px; }
+    
+    .podio-item { min-height: 140px; padding: 16px 10px; }
+    
+    th, td { padding: 10px 6px; }
+    
+    .ranking-completo { padding: 12px; }
+    
+    .telao-footer { padding: 15px; margin-top: 15px; }
+}
+
+/* Landscape Mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .podio {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .primeiro { grid-column: 1; }
+}

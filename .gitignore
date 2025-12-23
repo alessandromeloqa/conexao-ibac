@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.prod
+*.log
+dist/
+build/
+.DS_Store
+*.swp
+*.swo
+coverage/
+.vscode/
+.idea/
+backups/*.sql
+backups/*.tar.gz
+ssl/*.pem
+install_*.log

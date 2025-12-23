@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Conexão IBAC</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="auth.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <a href="dashboard.html">
+                    <img src="http://ibacvsj.com.br/wp-content/uploads/2023/03/Logo_Internet.png" alt="IBAC Logo" class="logo">
+                </a>
+                <div>
+                    <h1>Dashboard Administrativo</h1>
+                    <nav>
+                        <a href="dashboard.html" class="active">Dashboard</a>
+                        <a href="index.html">Histórico</a>
+                        <a href="ranking-select.html">Ranking</a>
+                        <a href="admin-eventos.html">Cadastro de Eventos</a>
+                        <a href="admin-pregadores.html">Cadastro de Pregadores</a>
+                        <a href="admin-criterios.html">Cadastro de Critérios</a>
+                        <a href="#" onclick="logout()" style="color: #e74c3c;">Sair</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <section class="card">
+            <h2>Filtrar por Evento</h2>
+            <div class="form-group">
+                <label>Evento</label>
+                <select id="eventoFiltro">
+                    <option value="">Todos os eventos</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="resumo">
+            <div class="card">
+                <h3>Total de Eventos</h3>
+                <p id="totalEventos">-</p>
+            </div>
+            <div class="card">
+                <h3>Total de Pregadores</h3>
+                <p id="totalPregadores">-</p>
+            </div>
+            <div class="card">
+                <h3>Total de Avaliações</h3>
+                <p id="totalAvaliacoes">-</p>
+            </div>
+            <div class="card">
+                <h3>Eventos Ativos</h3>
+                <p id="eventosAtivos">-</p>
+            </div>
+        </section>
+
+        <section class="grafico">
+            <h2>Avaliações por Evento</h2>
+            <canvas id="avaliacoesChart"></canvas>
+        </section>
+
+        <section class="grafico">
+            <h2>Média Geral por Evento</h2>
+            <canvas id="mediasChart"></canvas>
+        </section>
+
+        <section class="tabela">
+            <h2>Últimas Avaliações</h2>
+            <table id="ultimasAvaliacoes">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Evento</th>
+                        <th>Pregador</th>
+                        <th>Avaliador</th>
+                        <th>Média</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

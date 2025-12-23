@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparativo de Eventos - Conexão IBAC</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <img src="http://ibacvsj.com.br/wp-content/uploads/2023/03/Logo_Internet.png" alt="IBAC Logo" class="logo">
+                <div>
+                    <h1>Comparativo Entre Eventos</h1>
+                    <nav>
+                        <a href="index.html">Histórico</a>
+                        <a href="comparativo.html" class="active">Comparativo</a>
+                        <a href="avaliacao.html">Avaliar</a>
+                        <a href="ranking-select.html">Ranking</a>
+                        <a href="admin-criterios.html">Admin</a>
+                        <a href="admin-pregadores.html">Pregadores</a>
+                        <a href="admin-eventos.html">Eventos</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>Eventos (selecione 2 ou mais)</label>
+                <select id="eventoSelect" multiple size="5"></select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Critério (opcional)</label>
+                <select id="criterioSelect">
+                    <option value="">Média Geral</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Período</label>
+                <input type="date" id="dataInicio">
+                <input type="date" id="dataFim">
+            </div>
+
+            <button id="btnComparar">Comparar</button>
+        </div>
+
+        <div id="results" style="display: none;">
+            <section class="grafico">
+                <h2>Comparação em Barras</h2>
+                <canvas id="barChart"></canvas>
+            </section>
+
+            <section class="grafico">
+                <h2>Comparação em Radar</h2>
+                <canvas id="radarChart"></canvas>
+            </section>
+
+            <section class="tabela">
+                <h2>Tabela Comparativa</h2>
+                <table id="comparativoTable">
+                    <thead>
+                        <tr>
+                            <th>Evento</th>
+                            <th>Média</th>
+                            <th>Diferença</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+
+    <script src="comparativo.js"></script>
+</body>
+</html>

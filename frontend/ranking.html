@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a4d7c">
+    <title>Ranking - Conexão IBAC</title>
+    <link rel="stylesheet" href="ranking.css">
+</head>
+<body>
+    <div class="telao">
+        <header class="telao-header">
+            <img src="http://ibacvsj.com.br/wp-content/uploads/2023/03/Logo_Internet.png" alt="IBAC Logo" class="logo-ranking">
+            <h1>🏆 Conexão IBAC</h1>
+            <h2 id="eventoNome">Carregando...</h2>
+            <p id="eventoData"></p>
+        </header>
+
+        <section class="podio">
+            <div class="podio-item primeiro" id="primeiro">
+                <div class="posicao">🥇 1º</div>
+                <div class="nome">-</div>
+                <div class="nota">-</div>
+            </div>
+            <div class="podio-item segundo" id="segundo">
+                <div class="posicao">🥈 2º</div>
+                <div class="nome">-</div>
+                <div class="nota">-</div>
+            </div>
+            <div class="podio-item terceiro" id="terceiro">
+                <div class="posicao">🥉 3º</div>
+                <div class="nome">-</div>
+                <div class="nota">-</div>
+            </div>
+        </section>
+
+        <section class="ranking-completo">
+            <h3>📊 Ranking Completo</h3>
+            <table id="rankingTable">
+                <thead>
+                    <tr>
+                        <th>Pos</th>
+                        <th>Pregador</th>
+                        <th>Média</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <footer class="telao-footer">
+            <p>🔄 Atualização automática a cada 5 segundos <span id="atualizando" style="display:none; color: #27ae60;">✓</span></p>
+        </footer>
+    </div>
+
+    <script src="ranking.js"></script>
+</body>
+</html>

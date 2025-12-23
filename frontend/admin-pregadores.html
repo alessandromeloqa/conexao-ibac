@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Pregadores - Conexão IBAC</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="auth.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <img src="http://ibacvsj.com.br/wp-content/uploads/2023/03/Logo_Internet.png" alt="IBAC Logo" class="logo">
+                <div>
+                    <h1>Cadastro de Pregadores</h1>
+                    <nav>
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="index.html">Histórico</a>
+                        <a href="ranking-select.html">Ranking</a>
+                        <a href="admin-eventos.html">Cadastro de Eventos</a>
+                        <a href="admin-pregadores.html" class="active">Cadastro de Pregadores</a>
+                        <a href="admin-criterios.html">Cadastro de Critérios</a>
+                        <a href="#" onclick="logout()" style="color: #e74c3c;">Sair</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <section class="card">
+            <h2>Novo Pregador</h2>
+            <div class="form-group">
+                <label>Evento *</label>
+                <select id="eventoSelect">
+                    <option value="">Selecione o evento</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Nome do Pregador *</label>
+                <input type="text" id="nome" placeholder="Nome completo">
+            </div>
+            <div class="form-group">
+                <label>Tema da Pregação</label>
+                <input type="text" id="tema" placeholder="Tema (opcional)">
+            </div>
+            <button id="btnCriar">Cadastrar Pregador no Evento</button>
+        </section>
+
+        <section class="card">
+            <h2>Importação em Massa</h2>
+            <div class="form-group">
+                <label>Evento *</label>
+                <select id="eventoImportar">
+                    <option value="">Selecione o evento</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Arquivo CSV *</label>
+                <input type="file" id="arquivoCSV" accept=".csv">
+                <small style="display: block; margin-top: 5px; color: #666;">
+                    Formato: nome (cabeçalho obrigatório)
+                </small>
+            </div>
+            <button id="btnImportar">Importar Pregadores</button>
+            <a href="#" id="btnBaixarModelo" style="margin-left: 10px; text-decoration: none;">Baixar Modelo CSV</a>
+        </section>
+
+        <section class="card">
+            <h2>Pregadores Cadastrados no Evento</h2>
+            <div class="form-group">
+                <label>Filtrar por Evento</label>
+                <select id="eventoFiltro">
+                    <option value="">Todos os eventos</option>
+                </select>
+            </div>
+            <table id="pregadoresTable">
+                <thead>
+                    <tr>
+                        <th>Evento</th>
+                        <th>Pregador</th>
+                        <th>Tema</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <div id="modalEditar" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Editar Participação</h3>
+                <div class="form-group">
+                    <label>Nome do Pregador</label>
+                    <input type="text" id="editNome">
+                </div>
+                <div class="form-group">
+                    <label>Tema</label>
+                    <input type="text" id="editTema">
+                </div>
+                <button onclick="salvarEdicao()">Salvar</button>
+                <button onclick="fecharModal()" style="background: var(--danger);">Cancelar</button>
+            </div>
+        </div>
+
+        <div id="mensagem" class="mensagem"></div>
+    </div>
+
+    <script src="admin-pregadores.js"></script>
+</body>
+</html>

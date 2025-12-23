@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecionar Evento - Ranking</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <img src="http://ibacvsj.com.br/wp-content/uploads/2023/03/Logo_Internet.png" alt="IBAC Logo" class="logo">
+                <div>
+                    <h1>Painel Público de Ranking</h1>
+                    <nav>
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="index.html">Histórico</a>
+                        <a href="ranking-select.html" class="active">Ranking</a>
+                        <a href="admin-eventos.html">Cadastro de Eventos</a>
+                        <a href="admin-pregadores.html">Cadastro de Pregadores</a>
+                        <a href="admin-criterios.html">Cadastro de Critérios</a>
+                        <a href="login.html" style="color: #e74c3c;">Sair</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <section class="card">
+            <h2>Selecione o Evento</h2>
+            <div class="form-group">
+                <label>Evento Ativo</label>
+                <select id="eventoSelect"></select>
+            </div>
+            <button id="btnAbrir">Abrir Painel de Ranking</button>
+            
+            <div style="margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                <h3 style="margin-bottom: 10px;">Como usar:</h3>
+                <ul style="line-height: 2;">
+                    <li>Selecione o evento ativo</li>
+                    <li>Clique em "Abrir Painel de Ranking"</li>
+                    <li>Abra em tela cheia (F11) para exibir no telão</li>
+                    <li>Atualização automática a cada 10 segundos</li>
+                    <li>Compartilhe a URL gerada para acesso público</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api';
+
+        async function init() {
+            const response = await fetch(`${API_URL}/eventos`);
+            const eventos = await response.json();
+            
+            const ativos = eventos.filter(e => e.status === 'ativo');
+            const select = document.getElementById('eventoSelect');
+            
+            ativos.forEach(e => {
+                const option = new Option(e.nome, e.id);
+                select.add(option);
+            });
+
+            document.getElementById('btnAbrir').addEventListener('click', () => {
+                const eventoId = select.value;
+                if (eventoId) {
+                    window.open(`ranking.html?evento=${eventoId}`, '_blank');
+                } else {
+                    alert('Selecione um evento');
+                }
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
