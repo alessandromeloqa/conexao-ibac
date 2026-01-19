@@ -57,6 +57,13 @@ CREATE TABLE IF NOT EXISTS avaliacoes (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS certificados (
+    id SERIAL PRIMARY KEY,
+    participacao_id INT REFERENCES participacoes(id) UNIQUE,
+    codigo_validacao UUID DEFAULT gen_random_uuid(),
+    data_geracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Índices para performance
 CREATE INDEX IF NOT EXISTS idx_participacoes_pregador ON participacoes(pregador_id);
 CREATE INDEX IF NOT EXISTS idx_participacoes_evento ON participacoes(evento_id);
@@ -71,8 +78,15 @@ CREATE INDEX IF NOT EXISTS idx_certificados_codigo ON certificados(codigo_valida
 CREATE INDEX IF NOT EXISTS idx_certificados_participacao ON certificados(participacao_id);
 
 -- Constraint de duplicidade
-ALTER TABLE avaliacoes ADD CONSTRAINT unique_avaliacao 
-    UNIQUE (participacao_id, criterio_id, avaliador_nome);
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint WHERE conname = 'unique_avaliacao'
+    ) THEN
+        ALTER TABLE avaliacoes ADD CONSTRAINT unique_avaliacao 
+            UNIQUE (participacao_id, criterio_id, avaliador_nome);
+    END IF;
+END $$;
 
 -- View materializada para histórico do pregador (performance)
 CREATE MATERIALIZED VIEW IF NOT EXISTS vw_historico_pregador AS
@@ -109,11 +123,4 @@ JOIN avaliacoes a ON part.id = a.participacao_id
 JOIN criterios c ON a.criterio_id = c.id
 GROUP BY p.id, e.id, c.id, c.nome;
 
-CREATE TABLE IF NOT EXISTS certificados (
-    id SERIAL PRIMARY KEY,
-    participacao_id INT REFERENCES participacoes(id) UNIQUE,
-    codigo_validacao UUID DEFAULT gen_random_uuid(),
-    data_geracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX IF NOT EXISTS idx_certificados_codigo ON certificados(codigo_validacao);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_vw_media_criterio_pregador ON vw_media_criterio_pregador(pregador_id, evento_id, criterio_id);

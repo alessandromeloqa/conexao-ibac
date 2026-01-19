@@ -1,39 +1,52 @@
-import pool from '../db.js';
+import historicoService from '../services/historicoService.js';
+import { gerarHistoricoPDF } from '../services/pdfService.js';
 
 export const getHistoricoPregador = async (req, res) => {
   const { pregadorId } = req.params;
 
   try {
-    const historico = await pool.query(
-      `SELECT * FROM vw_historico_pregador 
-       WHERE pregador_id = $1 
-       ORDER BY data_evento DESC`,
-      [pregadorId]
-    );
-
-    const mediaCriterios = await pool.query(
-      `SELECT evento_id, criterio_nome, media_criterio 
-       FROM vw_media_criterio_pregador 
-       WHERE pregador_id = $1`,
-      [pregadorId]
-    );
-
-    const resumo = await pool.query(
-      `SELECT 
-         COUNT(DISTINCT evento_id) as total_eventos,
-         AVG(media_geral) as media_geral_historica,
-         SUM(total_avaliacoes) as total_avaliacoes
-       FROM vw_historico_pregador 
-       WHERE pregador_id = $1`,
-      [pregadorId]
-    );
-
-    res.json({
-      eventos: historico.rows,
-      criterios: mediaCriterios.rows,
-      resumo: resumo.rows[0]
-    });
+    const data = await historicoService.getHistoricoPregador(pregadorId);
+    res.json(data);
   } catch (error) {
+    console.error('Erro ao buscar histórico:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Erro ao buscar histórico do pregador' 
+    });
+  }
+};
+
+export const getHistoricoDetalhado = async (req, res) => {
+  const { pregadorId, eventoId } = req.params;
+
+  try {
+    const data = await historicoService.getHistoricoDetalhado(pregadorId, eventoId);
+    res.json(data);
+  } catch (error) {
+    console.error('Erro ao buscar histórico detalhado:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Erro ao buscar histórico detalhado' 
+    });
+  }
+};
+
+export const getHistoricoPDF = async (req, res) => {
+  const { pregadorId } = req.params;
+
+  try {
+    const data = await historicoService.getHistoricoPregador(pregadorId);
+    
+    if (!data.eventos || data.eventos.length === 0) {
+      return res.status(404).json({ error: 'Nenhum histórico encontrado' });
+    }
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=historico_${data.eventos[0].pregador_nome.replace(/\s+/g, '_')}.pdf`);
+
+    gerarHistoricoPDF(data, res);
+  } catch (error) {
+    console.error('Erro ao gerar PDF:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -42,29 +55,29 @@ export const getEvolucaoPregador = async (req, res) => {
   const { pregadorId } = req.params;
 
   try {
-    const evolucao = await pool.query(
-      `SELECT 
-         TO_CHAR(data_evento, 'MM/YYYY') as periodo,
-         media_geral,
-         evento_nome
-       FROM vw_historico_pregador 
-       WHERE pregador_id = $1 
-       ORDER BY data_evento ASC`,
-      [pregadorId]
-    );
-
-    res.json(evolucao.rows);
+    const data = await historicoService.getEvolucaoPregador(pregadorId);
+    res.json(data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Erro ao buscar evolução:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Erro ao buscar evolução do pregador' 
+    });
   }
 };
 
 export const refreshHistorico = async (req, res) => {
   try {
-    await pool.query('REFRESH MATERIALIZED VIEW CONCURRENTLY vw_historico_pregador');
-    await pool.query('REFRESH MATERIALIZED VIEW CONCURRENTLY vw_media_criterio_pregador');
-    res.json({ message: 'Histórico atualizado' });
+    await historicoService.refreshMaterializedViews();
+    res.json({ 
+      success: true, 
+      message: 'Histórico atualizado com sucesso' 
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Erro ao atualizar histórico:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Erro ao atualizar histórico' 
+    });
   }
 };

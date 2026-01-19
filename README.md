@@ -1,6 +1,19 @@
-# Conexão IBAC - Histórico Individual do Pregador
+# 🎯 Conexão IBAC - Sistema de Avaliação Homilética
 
-Sistema de avaliação homilética com histórico completo de desempenho.
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](CHANGELOG.md)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+Sistema moderno de avaliação homilética com histórico completo de desempenho, arquitetura limpa e design mobile-first.
+
+## ✨ Novidades v1.1.0
+
+🚀 **Arquitetura Moderna** - Service Layer (SOLID, DRY, KISS)  
+📱 **Mobile-First** - Design responsivo otimizado  
+🎨 **Design System** - CSS Variables para consistência  
+⚡ **Performance** - Queries paralelas e otimizadas  
+🔐 **Segurança** - Validação robusta e sanitização  
+
+📚 **[Ver documentação completa →](INDICE_NAVEGACAO_V1.1.0.md)**
 
 ## 🚀 Quick Start
 

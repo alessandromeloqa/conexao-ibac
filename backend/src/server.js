@@ -12,6 +12,7 @@ import pregadorRoutes from './routes/pregador.js';
 import eventoRoutes from './routes/evento.js';
 import participacaoRoutes from './routes/participacao.js';
 import dashboardRoutes from './routes/dashboard.js';
+import relatorioRoutes from './routes/relatorio.js';
 import { sanitizeInput } from './middleware/validation.js';
 import { authMiddleware } from './middleware/auth.js';
 
@@ -35,6 +36,7 @@ app.use('/api', certificadoRoutes);
 app.use('/api', avaliacaoRoutes);
 app.use('/api', rankingRoutes);
 app.use('/api', dashboardRoutes);
+app.use('/api', relatorioRoutes);
 
 // Rotas protegidas (requerem autenticação)
 app.use('/api/admin', authMiddleware);

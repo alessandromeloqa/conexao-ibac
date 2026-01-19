@@ -5,6 +5,15 @@ document.getElementById('password').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') login();
 });
 
+const togglePassword = document.getElementById('togglePassword');
+const passwordInput = document.getElementById('password');
+
+togglePassword.addEventListener('click', () => {
+    const type = passwordInput.type === 'password' ? 'text' : 'password';
+    passwordInput.type = type;
+    togglePassword.textContent = type === 'password' ? '👁️' : '🙈';
+});
+
 async function login() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;

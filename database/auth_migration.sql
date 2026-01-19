@@ -25,8 +25,3 @@ ALTER TABLE eventos ADD COLUMN IF NOT EXISTS token_acesso VARCHAR(64) UNIQUE;
 CREATE INDEX IF NOT EXISTS idx_evento_tokens_evento ON evento_tokens(evento_id);
 CREATE INDEX IF NOT EXISTS idx_evento_tokens_token ON evento_tokens(token);
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);
-
--- Usuário admin padrão (senha: admin123)
-INSERT INTO usuarios (username, password_hash, nome) 
-VALUES ('admin', '$2b$10$rKZLvVZQxQh5Y5YvYx5YxOKZLvVZQxQh5Y5YvYx5YxOKZLvVZQxQh', 'Administrador')
-ON CONFLICT (username) DO NOTHING;

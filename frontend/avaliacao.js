@@ -148,11 +148,17 @@ function renderizarCriterios() {
 }
 
 async function enviarAvaliacao() {
-    const avaliadorNome = document.getElementById('avaliadorNome').value;
+    const avaliadorNome = document.getElementById('avaliadorNome').value.trim();
     const participacaoId = parseInt(document.getElementById('pregadorSelect').value);
 
-    if (!avaliadorNome || !participacaoId) {
-        mostrarMensagem('Preencha todos os campos de identificação', 'error');
+    if (!avaliadorNome) {
+        mostrarMensagem('O campo "Seu Nome (Avaliador)" é obrigatório', 'error');
+        document.getElementById('avaliadorNome').focus();
+        return;
+    }
+
+    if (!participacaoId) {
+        mostrarMensagem('Selecione um pregador para avaliar', 'error');
         return;
     }
 

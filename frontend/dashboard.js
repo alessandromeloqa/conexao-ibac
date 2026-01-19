@@ -13,10 +13,15 @@ async function init() {
 async function carregarEventos() {
     try {
         const eventos = await fetch(`${API_URL}/eventos`).then(r => r.json());
-        const select = document.getElementById('eventoFiltro');
+        const selectFiltro = document.getElementById('eventoFiltro');
+        const selectRelatorio = document.getElementById('eventoRelatorioGeral');
         
         eventos.filter(e => e.status === 'ativo').forEach(e => {
-            select.add(new Option(e.nome, e.id));
+            selectFiltro.add(new Option(e.nome, e.id));
+        });
+        
+        eventos.forEach(e => {
+            selectRelatorio.add(new Option(e.nome, e.id));
         });
     } catch (error) {
         console.error('Erro ao carregar eventos:', error);
@@ -155,6 +160,128 @@ async function carregarUltimasAvaliacoes() {
         });
     } catch (error) {
         console.error('Erro ao carregar últimas avaliações:', error);
+    }
+}
+
+// Relatórios
+const modal = document.getElementById('modalRelatorio');
+const closeBtn = document.querySelector('.close-relatorio');
+const btnRelatorioGeral = document.getElementById('btnRelatorioGeral');
+const btnRelatorioPorCandidato = document.getElementById('btnRelatorioPorCandidato');
+const eventoRelatorioSelect = document.getElementById('eventoRelatorio');
+const pregadorRelatorioSelect = document.getElementById('pregadorRelatorio');
+const btnGerarRelatorio = document.getElementById('btnGerarRelatorio');
+
+btnRelatorioGeral.addEventListener('click', gerarRelatorioGeral);
+btnRelatorioPorCandidato.addEventListener('click', abrirModalCandidato);
+closeBtn.addEventListener('click', () => modal.style.display = 'none');
+window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+
+eventoRelatorioSelect.addEventListener('change', carregarPregadoresRelatorio);
+btnGerarRelatorio.addEventListener('click', gerarRelatorioCandidato);
+
+async function gerarRelatorioGeral() {
+    try {
+        const eventoId = document.getElementById('eventoRelatorioGeral').value;
+        
+        btnRelatorioGeral.disabled = true;
+        btnRelatorioGeral.textContent = '⏳ Gerando...';
+        
+        const url = eventoId 
+            ? `${API_URL}/relatorios/geral/pdf?eventoId=${eventoId}`
+            : `${API_URL}/relatorios/geral/pdf`;
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) throw new Error('Erro ao gerar relatório');
+        
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = `relatorio_geral_${new Date().toISOString().split('T')[0]}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(downloadUrl);
+        document.body.removeChild(a);
+        
+        btnRelatorioGeral.disabled = false;
+        btnRelatorioGeral.textContent = '📄 Relatório Geral';
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao gerar relatório');
+        btnRelatorioGeral.disabled = false;
+        btnRelatorioGeral.textContent = '📄 Relatório Geral';
+    }
+}
+
+async function abrirModalCandidato() {
+    modal.style.display = 'block';
+    
+    try {
+        const eventos = await fetch(`${API_URL}/eventos`).then(r => r.json());
+        eventoRelatorioSelect.innerHTML = '<option value="">Selecione um evento</option>';
+        eventos.forEach(e => {
+            eventoRelatorioSelect.add(new Option(e.nome, e.id));
+        });
+    } catch (error) {
+        console.error('Erro ao carregar eventos:', error);
+    }
+}
+
+async function carregarPregadoresRelatorio() {
+    const eventoId = eventoRelatorioSelect.value;
+    pregadorRelatorioSelect.innerHTML = '<option value="">Selecione um pregador</option>';
+    btnGerarRelatorio.disabled = true;
+    
+    if (!eventoId) return;
+    
+    try {
+        const participacoes = await fetch(`${API_URL}/eventos/${eventoId}/participacoes`).then(r => r.json());
+        participacoes.forEach(p => {
+            pregadorRelatorioSelect.add(new Option(p.pregador_nome, p.pregador_id));
+        });
+    } catch (error) {
+        console.error('Erro ao carregar pregadores:', error);
+    }
+}
+
+pregadorRelatorioSelect.addEventListener('change', () => {
+    btnGerarRelatorio.disabled = !pregadorRelatorioSelect.value;
+});
+
+async function gerarRelatorioCandidato() {
+    const pregadorId = pregadorRelatorioSelect.value;
+    const eventoId = eventoRelatorioSelect.value;
+    
+    if (!pregadorId || !eventoId) return;
+    
+    try {
+        btnGerarRelatorio.disabled = true;
+        btnGerarRelatorio.textContent = '⏳ Gerando...';
+        
+        const response = await fetch(`${API_URL}/relatorios/candidato/${pregadorId}/evento/${eventoId}/pdf`);
+        
+        if (!response.ok) throw new Error('Erro ao gerar relatório');
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `relatorio_candidato_${pregadorId}_${new Date().toISOString().split('T')[0]}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        modal.style.display = 'none';
+        btnGerarRelatorio.disabled = false;
+        btnGerarRelatorio.textContent = 'Gerar Relatório';
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao gerar relatório');
+        btnGerarRelatorio.disabled = false;
+        btnGerarRelatorio.textContent = 'Gerar Relatório';
     }
 }
 

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Histórico do Pregador - Conexão IBAC</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="historico.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -12,7 +13,7 @@
         <header>
             <div class="header-content">
                 <a href="index.html">
-                    <img src="http://ibacvsj.com.br/wp-content/uploads/2023/03/Logo_Internet.png" alt="IBAC Logo" class="logo">
+                    <img src="assets/logo.png" alt="IBAC Logo" class="logo">
                 </a>
                 <div>
                     <h1>Histórico Individual do Pregador</h1>
@@ -67,6 +68,9 @@
 
             <section class="tabela">
                 <h2>Histórico Detalhado</h2>
+                <div style="margin-bottom: 15px;">
+                    <button id="btnExportarPDF" class="btn-exportar" style="display: none;">📄 Exportar PDF</button>
+                </div>
                 <table id="historicoTable">
                     <thead>
                         <tr>
@@ -76,11 +80,23 @@
                             <th>Média</th>
                             <th>Ranking</th>
                             <th>Avaliações</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
             </section>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div id="modalDetalhes" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalhes das Avaliações</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div id="modalBody"></div>
         </div>
     </div>
 

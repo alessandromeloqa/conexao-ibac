@@ -50,7 +50,7 @@
 <body>
     <div class="login-container">
         <div class="login-logo">
-            <img src="http://ibacvsj.com.br/wp-content/uploads/2023/03/Logo_Internet.png" alt="IBAC Logo">
+            <img src="assets/logo.png" alt="IBAC Logo">
             <h1>Área Administrativa</h1>
         </div>
         
@@ -61,7 +61,12 @@
         
         <div class="form-group">
             <label>Senha</label>
-            <input type="password" id="password" placeholder="Digite sua senha">
+            <div style="position: relative;">
+                <input type="password" id="password" placeholder="Digite sua senha" style="padding-right: 40px;">
+                <button type="button" id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 18px; color: #666;" title="Mostrar/Ocultar senha">
+                    👁️
+                </button>
+            </div>
         </div>
         
         <button id="btnLogin">Entrar</button>

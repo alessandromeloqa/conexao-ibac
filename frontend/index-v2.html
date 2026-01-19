@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de avaliação homilética - Histórico Individual do Pregador">
+    <meta name="theme-color" content="#1a4d7c">
+    <title>Histórico do Pregador - Conexão IBAC</title>
+    <link rel="stylesheet" href="styles-v2.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <a href="index-v2.html" aria-label="Página inicial">
+                    <img src="assets/logo.png" 
+                         alt="Logo IBAC" 
+                         class="logo">
+                </a>
+                <div>
+                    <h1>Histórico Individual do Pregador</h1>
+                    <nav role="navigation" aria-label="Menu principal">
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="index-v2.html" class="active" aria-current="page">Histórico</a>
+                        <a href="ranking-select.html">Ranking</a>
+                        <a href="admin-eventos.html">Eventos</a>
+                        <a href="admin-pregadores.html">Pregadores</a>
+                        <a href="admin-criterios.html">Critérios</a>
+                        <a href="login.html" style="color: #e74c3c;">Sair</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search Section -->
+        <section class="card mb-md">
+            <h2 class="sr-only">Buscar Histórico</h2>
+            <div class="grid grid-2">
+                <div class="form-group">
+                    <label for="eventoSelect">Evento</label>
+                    <select id="eventoSelect" aria-label="Selecione um evento">
+                        <option value="">Selecione um evento</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pregadorSelect">Pregador</label>
+                    <select id="pregadorSelect" aria-label="Selecione um pregador">
+                        <option value="">Selecione um pregador</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content (Hidden by default) -->
+        <div id="content" class="hidden">
+            <!-- Summary Cards -->
+            <section class="grid grid-3 mb-md" aria-label="Resumo estatístico">
+                <div class="card">
+                    <h3>Total de Eventos</h3>
+                    <p id="totalEventos" aria-live="polite">-</p>
+                </div>
+                <div class="card">
+                    <h3>Média Geral</h3>
+                    <p id="mediaGeral" aria-live="polite">-</p>
+                </div>
+                <div class="card">
+                    <h3>Total de Avaliações</h3>
+                    <p id="totalAvaliacoes" aria-live="polite">-</p>
+                </div>
+            </section>
+
+            <!-- Chart -->
+            <section class="card mb-md">
+                <h2>Evolução das Notas</h2>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="evolucaoChart" role="img" aria-label="Gráfico de evolução das notas"></canvas>
+                </div>
+            </section>
+
+            <!-- Table -->
+            <section class="card">
+                <h2>Histórico Detalhado</h2>
+                <div class="table-container">
+                    <table id="historicoTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Evento</th>
+                                <th scope="col">Data</th>
+                                <th scope="col">Tema</th>
+                                <th scope="col">Média</th>
+                                <th scope="col">Ranking</th>
+                                <th scope="col">Avaliações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6" class="text-center">Selecione um pregador para ver o histórico</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="hidden text-center mt-lg">
+            <div class="loading"></div>
+            <p class="mt-sm">Carregando dados...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="message error hidden" role="alert"></div>
+    </div>
+
+    <script src="app-v2.js"></script>
+</body>
+</html>

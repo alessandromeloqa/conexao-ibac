@@ -20,6 +20,17 @@ INSERT INTO criterios (nome, peso, ordem) VALUES
 ('Gestão do Tempo', 1.0, 5)
 ON CONFLICT DO NOTHING;
 
--- Refresh das views
-REFRESH MATERIALIZED VIEW CONCURRENTLY vw_historico_pregador;
-REFRESH MATERIALIZED VIEW CONCURRENTLY vw_media_criterio_pregador;
+-- Usuário fixo para desenvolvimento
+-- Usuário: admin
+-- Senha: admin123
+INSERT INTO usuarios (username, password_hash, nome, ativo) 
+VALUES (
+  'admin', 
+  '$2b$10$mcYJSoXsvn.5Kq0Bt6mYQOauEmJxjwG2ktP.wRGohR.F/AXVe1wu6', 
+  'Administrador',
+  true
+)
+ON CONFLICT (username) DO UPDATE SET 
+  password_hash = '$2b$10$mcYJSoXsvn.5Kq0Bt6mYQOauEmJxjwG2ktP.wRGohR.F/AXVe1wu6',
+  nome = 'Administrador',
+  ativo = true;

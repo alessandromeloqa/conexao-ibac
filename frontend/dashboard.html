@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Conexão IBAC</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="relatorio.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="auth.js"></script>
 </head>
@@ -13,7 +14,7 @@
         <header>
             <div class="header-content">
                 <a href="dashboard.html">
-                    <img src="http://ibacvsj.com.br/wp-content/uploads/2023/03/Logo_Internet.png" alt="IBAC Logo" class="logo">
+                    <img src="assets/logo.png" alt="IBAC Logo" class="logo">
                 </a>
                 <div>
                     <h1>Dashboard Administrativo</h1>
@@ -29,6 +30,20 @@
                 </div>
             </div>
         </header>
+
+        <section class="card">
+            <h2>Relatórios</h2>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end;">
+                <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+                    <label>Evento (Relatório Geral)</label>
+                    <select id="eventoRelatorioGeral">
+                        <option value="">Todos os eventos</option>
+                    </select>
+                </div>
+                <button id="btnRelatorioGeral" class="btn-relatorio">📄 Relatório Geral</button>
+                <button id="btnRelatorioPorCandidato" class="btn-relatorio">📄 Relatório por Candidato</button>
+            </div>
+        </section>
 
         <section class="card">
             <h2>Filtrar por Evento</h2>
@@ -84,6 +99,29 @@
                 <tbody></tbody>
             </table>
         </section>
+    </div>
+
+    <!-- Modal de Seleção de Candidato -->
+    <div id="modalRelatorio" class="modal-relatorio">
+        <div class="modal-relatorio-content">
+            <div class="modal-relatorio-header">
+                <h2>Selecionar Candidato</h2>
+                <span class="close-relatorio">&times;</span>
+            </div>
+            <div class="form-group-modal">
+                <label>Evento</label>
+                <select id="eventoRelatorio">
+                    <option value="">Selecione um evento</option>
+                </select>
+            </div>
+            <div class="form-group-modal">
+                <label>Pregador</label>
+                <select id="pregadorRelatorio">
+                    <option value="">Selecione um pregador</option>
+                </select>
+            </div>
+            <button id="btnGerarRelatorio" class="btn-gerar-relatorio" disabled>Gerar Relatório</button>
+        </div>
     </div>
 
     <script src="dashboard.js"></script>

@@ -21,7 +21,11 @@ export const validarParticipacao = async (req, res, next) => {
 export const validarAvaliacao = (req, res, next) => {
   const { participacao_id, criterio_id, nota, avaliador_nome } = req.body;
   
-  if (!participacao_id || !criterio_id || nota === undefined || !avaliador_nome) {
+  if (!avaliador_nome || avaliador_nome.trim() === '') {
+    return res.status(400).json({ error: 'Nome do avaliador é obrigatório' });
+  }
+  
+  if (!participacao_id || !criterio_id || nota === undefined) {
     return res.status(400).json({ error: 'Campos obrigatórios faltando' });
   }
   

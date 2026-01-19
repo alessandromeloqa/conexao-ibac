@@ -166,6 +166,28 @@ body {
     font-weight: 700;
 }
 
+.btn-exportar {
+    background: linear-gradient(135deg, var(--gold), #ffed4e);
+    color: #000;
+    border: none;
+    padding: 12px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(255,215,0,0.3);
+}
+
+.btn-exportar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,215,0,0.5);
+}
+
+.btn-exportar:active {
+    transform: translateY(0);
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
